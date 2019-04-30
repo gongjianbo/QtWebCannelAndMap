@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>resource/map_base.png</file>
+        <file>resource/map_icon_ceju.png</file>
+        <file>resource/map_icon_dianxuan.png</file>
+        <file>resource/map_icon_duobian.png</file>
+        <file>resource/map_icon_fangda.png</file>
+        <file>resource/map_icon_fangweijiao.png</file>
+        <file>resource/map_icon_jiequ.png</file>
+        <file>resource/map_icon_jietu.png</file>
+        <file>resource/map_icon_juxing.png</file>
+        <file>resource/map_icon_kuangxuan.png</file>
+        <file>resource/map_icon_manyou.png</file>
+        <file>resource/map_icon_mianji.png</file>
+        <file>resource/map_icon_quanlan.png</file>
+        <file>resource/map_icon_suofang.png</file>
+        <file>resource/map_icon_suoxiao.png</file>
+        <file>resource/map_icon_xingzhengqu.png</file>
+        <file>resource/map_icon_yidong.png</file>
+        <file>resource/map_tool_base.png</file>
+        <file>MapIconButton.qml</file>
+    </qresource>
+</RCC>

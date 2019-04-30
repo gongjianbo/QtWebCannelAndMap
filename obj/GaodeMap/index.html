@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>高德地图-在线</title>
+
+    <!-- 导入资源 -->
+    <script type="text/javascript" src="./qwebchannel.js"></script>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://webapi.amap.com/maps?v=1.4.14&key=53c0507c269e4614d71edb3a78bc1e21&plugin=AMap.MouseTool">
+    </script>
+
+    <style type="text/css">
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(3, 52, 71);
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+
+    <script>
+        //Qt Channel
+        if (location.search != "")
+            var baseUrl = (/[?&]webChannelBaseUrl=([A-Za-z0-9\-:/\.]+)/.exec(location.search)[1]);
+        else
+            var baseUrl = "ws://localhost:12345";
+        var socket = new WebSocket(baseUrl);
+
+        socket.onclose = function () {
+            console.error("web channel closed");
+        };
+        socket.onerror = function (error) {
+            console.error("web channel error: " + error);
+        };
+        socket.onopen = function () {
+            new QWebChannel(socket, function (channel) {
+                // make dialog object accessible globally  使对话框对象可全局访问
+                window.chobj = channel.objects.chobj;
+            });
+        }
+
+        //高德地图
+        var map = new AMap.Map('container', {
+            resizeEnable: true, //是否监控地图容器尺寸变化
+            zoom: 10, //初始化地图层级
+            center: [104.06, 30.67], //初始化地图中心点
+            mapStyle: "amap://styles/blue"
+        });
+        var mouseTool = new AMap.MouseTool(map);
+
+        //设置zoom
+        function setMapZoom(mapZoom) {
+            map.setZoom(mapZoom);
+        }
+
+        //放大/缩小
+        function changeMapZoom(args) {
+            switch (args) {
+                case "add":
+                    map.setZoom(map.getZoom() + 1)
+                    break;
+                case "sub":
+                    map.setZoom(map.getZoom() - 1)
+                    break;
+                default:
+                    break;
+            }
+            //closeMouseTool();
+            //map.setDefaultCursor("pointer");
+            //console.log(map.getZoom());
+            //外部加载的js不能通过console.log打印信息，只能看到一些错误信息
+            chobj.recvText("" + map.getZoom());
+        }
+
+        //获取缩放
+        function sendZoomToApp() {
+            chobj.recvZoom(map.getZoom());
+        }
+
+        //关闭mouseTool
+        function closeMouseTool() {
+            mouseTool.close(true);
+            map.setDefaultCursor("pointer");
+        }
+
+        //街区图
+        function showStreet() {
+            map.setZoom([104.06, 30.67]);
+            map.setZoom(18);
+            closeMouseTool();
+        }
+
+        //全览
+        function showAll() {
+            map.setZoom(3);
+            closeMouseTool();
+        }
+
+        //漫游
+        function setFly() {
+            console.log('fly')
+            map.setDefaultCursor("pointer");
+            //closeMouseTool();
+        }
+
+
+        //测量-线
+        function drawLine() {
+            mouseTool.rule({
+                startMarkerOptions: { //可缺省
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(19, 31), //图标大小
+                        imageSize: new AMap.Size(19, 31),
+                        image: "https://webapi.amap.com/theme/v1.3/markers/b/start.png"
+                    })
+                },
+                endMarkerOptions: { //可缺省
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(19, 31), //图标大小
+                        imageSize: new AMap.Size(19, 31),
+                        image: "https://webapi.amap.com/theme/v1.3/markers/b/end.png"
+                    }),
+                    offset: new AMap.Pixel(-9, -31)
+                },
+                midMarkerOptions: { //可缺省
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(19, 31), //图标大小
+                        imageSize: new AMap.Size(19, 31),
+                        image: "https://webapi.amap.com/theme/v1.3/markers/b/mid.png"
+                    }),
+                    offset: new AMap.Pixel(-9, -31)
+                },
+                lineOptions: { //可缺省
+                    strokeStyle: "solid",
+                    strokeColor: "#FF33FF",
+                    strokeOpacity: 1,
+                    strokeWeight: 2
+                }
+                //同 RangingTool 的 自定义 设置，缺省为默认样式
+            });
+            map.setDefaultCursor("crosshair");
+        }
+
+        //测量-面积
+        function drawArea() {
+            mouseTool.measureArea({
+                strokeColor: '#80d8ff',
+                fillColor: '#80d8ff',
+                fillOpacity: 0.3
+                //同 Polygon 的 Option 设置
+            });
+            map.setDefaultCursor("crosshair");
+        }
+
+        //点选
+        function showPoint() {
+            map.setDefaultCursor("pointer");
+        }
+
+        //框选
+        function showRect() {
+            mouseTool.rectZoomIn({
+                strokeColor: '#80d8ff',
+                fillColor: '#80d8ff',
+                fillOpacity: 0.3
+            });
+            map.setDefaultCursor("pointer");
+        }
+
+
+        /*window.init = function () {
+        map = new AMap.Map('container', {
+        resizeEnable: true,
+        center: [116.480983, 39.989628],
+        zoom: 11,
+        mapStyle: "amap://styles/blue"
+        });
+        if (location.href.indexOf('guide=1') !== -1) {
+        map.setStatus({
+        scrollWheel: false
+        });
+        }
+        }*/
+    </script>
+    <!-- 并没有什么用 -->
+    <!-- <script src="https://webapi.amap.com/maps?v=1.4.14&key=53c0507c269e4614d71edb3a78bc1e21&callback=init"></script> -->
+
+</body>
+
+</html>
