@@ -1,11 +1,11 @@
-TEMPLATE = app
-
 QT += qml quick webengine websockets webchannel
 
+CONFIG += c++11 utf8_source
 
+TEMPLATE = app
+
+# exe output dir
 DESTDIR = $$PWD/obj
-
-CONFIG += c++11
 
 SOURCES += src/main.cpp \
     src/websocketclientwrapper.cpp \
@@ -37,7 +37,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    src/MapIconButton.qml
+    src/MapIconButton.qml \
+    src/main.qml
 
 HEADERS += \
     src/websocketclientwrapper.h \

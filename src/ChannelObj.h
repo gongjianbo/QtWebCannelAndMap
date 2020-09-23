@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+//参照Qt webchannel demo
+//那两个websocket类文件也是直接copy的
 class ChannelObj : public QObject
 {
     Q_OBJECT

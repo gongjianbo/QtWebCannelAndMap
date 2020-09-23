@@ -13,12 +13,16 @@
 //key
 //53c0507c269e4614d71edb3a78bc1e21
 //包含了webengine，我这配置问题需要先qmake一下
-
 int main(int argc, char *argv[])
 {
     qDebug()<<"init:"<<QDateTime::currentDateTime();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //有些情况可能需要soft opengl
+    //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+    //webengine必须初始化，之前放错了，应该在app构造之前
+    QtWebEngine::initialize();
+
     QGuiApplication app(argc, argv);
 
     // webchannel初始化
@@ -37,10 +41,6 @@ int main(int argc, char *argv[])
     // setup the obj and publish it to the QWebChannel
     ChannelObj chobj;
     channel.registerObject(QStringLiteral("chobj"), &chobj);
-
-
-    //webengine必须初始化
-    QtWebEngine::initialize();
 
     QQmlApplicationEngine engine;
     //单例--路径

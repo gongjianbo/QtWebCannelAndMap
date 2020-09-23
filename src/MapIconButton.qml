@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 
+//自定义的按钮，刚学的时候写的，写的很挫
 Rectangle {
     id: root_myiconbutton
     property alias imgSrc:image.source ;

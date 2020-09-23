@@ -1,9 +1,10 @@
-import QtQuick 2.7
-import QtQuick.Window 2.2
+import QtQuick 2.9
+import QtQuick.Window 2.9
 
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.9
 import QtWebEngine 1.2
 
+//测试webengine 以及 webchannel
 Window {
     id: root_window
     visible: true
@@ -11,28 +12,17 @@ Window {
     height: 500
     title: qsTr("高德地图-在线")
 
-    //color: rgb(3,52,71)
     property int selectedIndex: 0
     //gaode pc zooms[3,18]
     //property int mapZoom: 10
 
-    Text {
-        id: map_text
-        color: "yellow"
-
-        font.pixelSize: 16
-        font.family: "宋体"
-        font.bold: true
-        z:map_browser.z+1
-
-        text: qsTr("test...")
-    }
-
+    //背景
     Image{
         anchors.fill:parent
         source: "qrc:/resource/map_base.png"
     }
 
+    //操作栏
     Rectangle{
         id: map_area
         anchors.fill: parent
@@ -58,6 +48,7 @@ Window {
                 source: "qrc:/resource/map_tool_base.png"
             }
 
+            //这里完全可以用listview之类的来完成
             Row{
                 id: head_row
                 anchors.fill: parent
@@ -411,15 +402,20 @@ Window {
         }
     }
 
+    //web显示高德地图
     WebEngineView{
         id: map_browser
         anchors.fill: parent
-        //anchors.margins: parent.border.width
-
+        //加载的页面地址
         url:"file:///"+appDirPath+"/GaodeMap/index.html"
+        //页面跳转
+        //onNewViewRequested: request.openIn(webview)
+        //允许加载flash等插件
+        //settings.pluginsEnabled:true
     }
 
-    Rectangle{
+    //重新加载-按钮
+    Button{
         id: reload
         width: 90
         height: 30
@@ -428,29 +424,7 @@ Window {
         anchors.top: parent.top
         anchors.margins: 5
 
-        Rectangle{
-            anchors.fill: parent
-            color: "green"
-
-            Text{
-                anchors.centerIn: parent
-                text: "reload"
-                color: "white"
-            }
-        }
-
-        MouseArea{
-            anchors.fill: parent
-            cursorShape:Qt.PointingHandCursor
-            onClicked: map_browser.reload();
-        }
+        text: "reload"
+        onClicked: map_browser.reload();
     }
-
-
-    function rgb(r, g, b){
-        var rgb_value = (r << 16 | g << 8 | b).toString(16);
-        rgb_value="#000000".slice(0,7-rgb_value.length)+rgb_value;
-        return rgb_value.toUpperCase();
-    }
-
 }

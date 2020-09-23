@@ -8,7 +8,7 @@
     <!-- 导入资源 -->
     <script type="text/javascript" src="./qwebchannel.js"></script>
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-    <script src="https://webapi.amap.com/maps?v=1.4.14&key=53c0507c269e4614d71edb3a78bc1e21&plugin=AMap.MouseTool">
+    <script src="https://webapi.amap.com/maps?v=1.3&key=53c0507c269e4614d71edb3a78bc1e21&plugin=AMap.MouseTool">
     </script>
 
     <style type="text/css">
@@ -53,7 +53,8 @@
             resizeEnable: true, //是否监控地图容器尺寸变化
             zoom: 10, //初始化地图层级
             center: [104.06, 30.67], //初始化地图中心点
-            mapStyle: "amap://styles/blue"
+            //设置地图样式之前可用，但是过了很久之后Qml运行发现没样式了，浏览器里正常
+            mapStyle: "amap://styles/darkblue" 
         });
         var mouseTool = new AMap.MouseTool(map);
 
