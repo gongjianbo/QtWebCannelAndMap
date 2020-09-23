@@ -129,7 +129,7 @@ Window {
                 }
 
                 MapIconButton {
-                    id: map_suofang
+                    id: map_scale
                     anchors.verticalCenter: parent.verticalCenter
                     imgSrc: "qrc:/resource/map_icon_suofang.png"
                     txt:"缩放"
@@ -139,16 +139,16 @@ Window {
                     onIconButtonClicked: {
                         root_window.selectedIndex=index;
                         //手动选择zoom
-                        map_suofang_set.open();
+                        map_scale_set.open();
                     }
                 }
 
                 Popup{
-                    id: map_suofang_set
+                    id: map_scale_set
                     height: 40
                     width: 200
-                    x: map_suofang.x
-                    y: map_suofang.y+map_suofang.height+10
+                    x: map_scale.x
+                    y: map_scale.y+map_scale.height+10
                     modal: false
                     focus: true
                     background: Rectangle{
@@ -168,12 +168,12 @@ Window {
                     }
 
                     Text{
-                        id: map_suofang_text
+                        id: map_scale_text
                         width: 40
                         height: parent.height
                         anchors.left: parent.left
                         anchors.top: parent.top
-                        text: Math.round(map_suofang_slider.value)
+                        text: Math.round(map_scale_slider.value)
                         font.pixelSize: 12
                         font.family: "Microsoft YaHei UI"
                         //font.bold: true
@@ -181,11 +181,11 @@ Window {
                     }
 
                     Slider{
-                        id: map_suofang_slider
+                        id: map_scale_slider
                         height: parent.height
 
                         anchors.right: parent.right
-                        anchors.left: map_suofang_text.right
+                        anchors.left: map_scale_text.right
                         anchors.top: parent.top
                         from:3
                         to:18
@@ -193,7 +193,7 @@ Window {
                         stepSize: 1
 
                         onValueChanged: {
-                            map_browser.runJavaScript("window.setMapZoom("+Math.round(map_suofang_slider.value)+")");
+                            map_browser.runJavaScript("window.setMapZoom("+Math.round(map_scale_slider.value)+")");
                         }
                     }
 
@@ -374,7 +374,7 @@ Window {
             }
             );
             chObj.consoleZoom.connect(function(value){
-                map_suofang_slider.value=value;
+                map_scale_slider.value=value;
             }
             );
         }
@@ -409,9 +409,9 @@ Window {
         //加载的页面地址
         url:"file:///"+appDirPath+"/GaodeMap/index.html"
         //页面跳转
-        //onNewViewRequested: request.openIn(webview)
+        onNewViewRequested: request.openIn(webview)
         //允许加载flash等插件
-        //settings.pluginsEnabled:true
+        settings.pluginsEnabled:true
     }
 
     //重新加载-按钮
