@@ -10,7 +10,7 @@ Window {
     visible: true
     width: 800
     height: 500
-    title: qsTr("高德地图-在线")
+    title: qsTr("高德地图-在线（by：龚建波1992  qq群：647637553）")
 
     property int selectedIndex: 0
     //gaode pc zooms[3,18]
