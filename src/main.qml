@@ -5,7 +5,7 @@ import QtQuick.Controls 2.9
 import QtWebEngine 1.2
 
 //测试webengine 以及 webchannel
-//这里遇到个问题就是高德地图的主题样式没加载出来
+//之前高德地图api版本没对，导致主题样式没加载出来
 Window {
     id: root_window
     visible: true
