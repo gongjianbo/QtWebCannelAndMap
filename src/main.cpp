@@ -1,7 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtWebEngine>
-#include <QtWebSockets/QWebSocketServer>
+#include <QWebChannel>
+#include <QWebSocketServer>
 
 #include <QDateTime>
 #include <QDebug>
@@ -18,14 +19,24 @@ int main(int argc, char *argv[])
     qDebug()<<"init:"<<QDateTime::currentDateTime();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    // 有些情况可能需要soft opengl
+
+    // 因为5.13的在线文档没了，所以我没法判断，请自己查下文档
+#if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
+    // 有些情况可能需要soft opengl，但我用了之后样式主题不能渲染了，报gpu相关错误
     //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+    //QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    // webengine须初始化，5.12放在app构造后，5.15放在构造前
+    QtWebEngine::initialize();
+    QGuiApplication app(argc, argv);
+#else
     // 5.12提示Attribute Qt::AA_ShareOpenGLContexts must be set before QCoreApplication is created
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    // 有些情况可能需要soft opengl
+    //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
     // webengine须初始化，5.12放在app构造后，5.15放在构造前
-    //QtWebEngine::initialize();
     QGuiApplication app(argc, argv);
     QtWebEngine::initialize();
+#endif
 
     // webchannel初始化
     // setup the QWebSocketServer
