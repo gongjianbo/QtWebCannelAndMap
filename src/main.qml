@@ -5,6 +5,7 @@ import QtQuick.Controls 2.9
 import QtWebEngine 1.2
 
 //测试webengine 以及 webchannel
+//这里遇到个问题就是高德地图的主题样式没加载出来
 Window {
     id: root_window
     visible: true
@@ -409,9 +410,9 @@ Window {
         //加载的页面地址
         url:"file:///"+appDirPath+"/GaodeMap/index.html"
         //页面跳转
-        onNewViewRequested: request.openIn(webview)
+        //onNewViewRequested: request.openIn(webview)
         //允许加载flash等插件
-        settings.pluginsEnabled:true
+        //settings.pluginsEnabled:true
     }
 
     //重新加载-按钮

@@ -10,20 +10,22 @@
 #include "websocketclientwrapper.h"
 #include "websockettransport.h"
 
-//key
-//53c0507c269e4614d71edb3a78bc1e21
-//包含了webengine，我这配置问题需要先qmake一下
+// key
+// 53c0507c269e4614d71edb3a78bc1e21
+// 包含了webengine，我这配置问题需要先qmake一下
 int main(int argc, char *argv[])
 {
     qDebug()<<"init:"<<QDateTime::currentDateTime();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    //有些情况可能需要soft opengl
+    // 有些情况可能需要soft opengl
     //QCoreApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
-    //webengine必须初始化，之前放错了，应该在app构造之前
-    QtWebEngine::initialize();
-
+    // 5.12提示Attribute Qt::AA_ShareOpenGLContexts must be set before QCoreApplication is created
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    // webengine须初始化，5.12放在app构造后，5.15放在构造前
+    //QtWebEngine::initialize();
     QGuiApplication app(argc, argv);
+    QtWebEngine::initialize();
 
     // webchannel初始化
     // setup the QWebSocketServer
